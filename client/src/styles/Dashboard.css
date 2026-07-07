@@ -1,0 +1,182 @@
+/* ==================================================
+   HEALTH CENTRE AI - DASHBOARD
+================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&family=IBM+Plex+Mono:wght@500&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body,
+#root{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#F6F9FC;
+    color:#0F172A;
+}
+
+/* =============================
+        MAIN LAYOUT
+============================= */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    min-height:100vh;
+    background:#F6F9FC;
+}
+
+.main{
+    padding:32px;
+}
+
+/* =============================
+          SIDEBAR
+============================= */
+
+.sidebar{
+    background:#083344;
+    color:white;
+    padding:28px 22px;
+
+    display:flex;
+    flex-direction:column;
+}
+
+/* ---------- Logo ---------- */
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:45px;
+}
+
+.logo-icon{
+    width:52px;
+    height:52px;
+
+    border-radius:16px;
+
+    background:#0F766E;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+
+    font-size:28px;
+    font-weight:bold;
+}
+
+.logo h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:22px;
+}
+
+.logo p{
+    font-size:13px;
+    color:#BFD6DB;
+}
+
+/* ---------- Menu ---------- */
+
+.sidebar nav{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+
+    flex:1;
+}
+
+.menu-item{
+
+    display:flex;
+    align-items:center;
+
+    gap:14px;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    transition:.25s;
+
+    cursor:pointer;
+
+    color:#D9F0F2;
+
+}
+
+.menu-item:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.menu-item.active{
+
+    background:#0F766E;
+
+    color:white;
+
+}
+
+/* ---------- Admin ---------- */
+
+.admin-panel{
+
+    border-top:1px solid rgba(255,255,255,.12);
+
+    padding-top:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.avatar{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    background:#0F766E;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-weight:bold;
+
+}
+
+.admin-panel h4{
+
+    font-size:15px;
+
+}
+
+.admin-panel small{
+
+    color:#BFD6DB;
+
+}
