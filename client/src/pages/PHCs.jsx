@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
 import Layout from "../components/layout/Layout";
-import PHCStats from "../components/phcs/PHCStats";
-import PHCTable from "../components/phcs/PHCTable";
-import AddPHCModal from "../components/phcs/AddPHCModal";
+import PHCStats from "../components/PHCs/PHCStats";
+import PHCTable from "../components/PHCs/PHCTable";
+import AddPHCModal from "../components/PHCs/AddPHCModal";
 
 import { useLanguage } from "../context/LanguageContext";
 
