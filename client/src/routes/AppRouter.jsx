@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 
 import Patients from "../pages/Patients";
@@ -22,10 +21,10 @@ function AppRouter() {
   return (
     <Routes>
 
-      {/* Login */}
+      {/* Redirect root directly to Dashboard */}
       <Route
         path="/"
-        element={<Login />}
+        element={<Navigate to="/dashboard" replace />}
       />
 
       {/* Dashboard */}
@@ -35,7 +34,6 @@ function AppRouter() {
       />
 
       {/* AI Modules */}
-
       <Route
         path="/stock-prediction"
         element={<StockPrediction />}
@@ -57,7 +55,6 @@ function AppRouter() {
       />
 
       {/* Management */}
-
       <Route
         path="/patients"
         element={<Patients />}
@@ -84,7 +81,6 @@ function AppRouter() {
       />
 
       {/* Other Pages */}
-
       <Route
         path="/analytics"
         element={<Analytics />}
@@ -101,17 +97,15 @@ function AppRouter() {
       />
 
       {/* Seeder */}
-
       <Route
         path="/seeder"
         element={<Seeder />}
       />
 
-      {/* Redirect */}
-
+      {/* Redirect unknown routes */}
       <Route
         path="*"
-        element={<Navigate to="/" replace />}
+        element={<Navigate to="/dashboard" replace />}
       />
 
     </Routes>
