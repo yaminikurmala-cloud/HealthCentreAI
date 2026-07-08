@@ -201,18 +201,6 @@ src/
 
 ---
 
-# 📷 Screenshots
-
-> Add screenshots of:
-- Dashboard
-- Patients Module
-- Medicines Module
-- AI Resource Allocation
-- Disease Outbreak
-- Stock Prediction
-- Demand Forecasting
-
----
 
 # 🚀 Future Scope
 
