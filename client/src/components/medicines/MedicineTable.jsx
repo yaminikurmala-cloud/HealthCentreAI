@@ -9,21 +9,41 @@ function MedicineTable({
 }) {
   const { t } = useLanguage();
 
-  const getStatus = (status) => {
-    switch (status) {
-      case "Critical":
-        return t.critical;
+  function getStatusText(status) {
+    const value = (status || "").toLowerCase();
 
-      case "Low":
-        return t.low;
+    switch (value) {
+      case "healthy":
+        return t.healthy || "Healthy";
 
-      case "Available":
-        return t.available;
+      case "warning":
+        return t.warning || "Warning";
+
+      case "critical":
+        return t.critical || "Critical";
 
       default:
         return status;
     }
-  };
+  }
+
+  function getStatusColor(status) {
+    const value = (status || "").toLowerCase();
+
+    switch (value) {
+      case "critical":
+        return "bg-red-100 text-red-700";
+
+      case "warning":
+        return "bg-yellow-100 text-yellow-700";
+
+      case "healthy":
+        return "bg-green-100 text-green-700";
+
+      default:
+        return "bg-slate-100 text-slate-700";
+    }
+  }
 
   if (loading) {
     return (
@@ -47,12 +67,11 @@ function MedicineTable({
 
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-
       <table className="w-full">
 
         <thead className="bg-slate-100">
-
           <tr>
+
             <th className="text-left px-6 py-4">
               {t.medicine}
             </th>
@@ -72,8 +91,8 @@ function MedicineTable({
             <th className="text-center px-6 py-4">
               {t.actions}
             </th>
-          </tr>
 
+          </tr>
         </thead>
 
         <tbody>
@@ -100,15 +119,13 @@ function MedicineTable({
               <td className="px-6 py-4">
 
                 <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    medicine.status === "Critical"
-                      ? "bg-red-100 text-red-700"
-                      : medicine.status === "Low"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : "bg-green-100 text-green-700"
-                  }`}
+                  className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+                    medicine.status
+                  )}`}
                 >
-                  {getStatus(medicine.status)}
+                  {getStatusText(
+                    medicine.status
+                  )}
                 </span>
 
               </td>
@@ -144,7 +161,6 @@ function MedicineTable({
         </tbody>
 
       </table>
-
     </div>
   );
 }

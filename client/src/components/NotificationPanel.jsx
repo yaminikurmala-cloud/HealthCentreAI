@@ -1,47 +1,130 @@
+import { useEffect, useState } from "react";
 import {
   Bell,
   AlertTriangle,
   CheckCircle,
-  Truck,
   BedDouble,
+  ClipboardList,
+  UserCheck,
 } from "lucide-react";
 
-const notifications = [
-  {
-    id: 1,
-    title: "Critical Stock Alert",
-    message: "Paracetamol will run out in 2 days",
-    time: "2 min ago",
-    color: "text-red-600",
-    icon: AlertTriangle,
-  },
-  {
-    id: 2,
-    title: "Bed Occupancy",
-    message: "PHC Kothapalli reached 92%",
-    time: "10 min ago",
-    color: "text-amber-600",
-    icon: BedDouble,
-  },
-  {
-    id: 3,
-    title: "Doctor Attendance",
-    message: "All PHCs adequately staffed",
-    time: "25 min ago",
-    color: "text-green-600",
-    icon: CheckCircle,
-  },
-  {
-    id: 4,
-    title: "Medicine Transfer",
-    message: "80 units transferred successfully",
-    time: "1 hour ago",
-    color: "text-blue-600",
-    icon: Truck,
-  },
-];
+import { usePHC } from "../context/PHCContext";
+
+import { getMedicines } from "../services/medicineService";
+import { getPatients } from "../services/patientService";
+import { getPHCs } from "../services/phcService";
+import { getTests } from "../services/testService";
 
 function NotificationPanel({ open }) {
+  const { selectedPHC } = usePHC();
+
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    loadNotifications();
+  }, [selectedPHC]);
+
+  async function loadNotifications() {
+    const [medicines, patients, phcs, tests] = await Promise.all([
+      getMedicines(),
+      getPatients(),
+      getPHCs(),
+      getTests(),
+    ]);
+
+    let list = [];
+
+    // Critical Medicines
+    medicines
+      .filter((m) => m.status === "Critical")
+      .forEach((m) => {
+        list.push({
+          title: "Critical Medicine",
+          message: `${m.name} is critically low`,
+          phcName: m.phcName,
+          time: "Now",
+          color: "text-red-600",
+          icon: AlertTriangle,
+        });
+      });
+
+    // Critical Patients
+    const patientMap = {};
+
+    patients.forEach((p) => {
+      if (p.status !== "Critical") return;
+
+      patientMap[p.phcName] =
+        (patientMap[p.phcName] || 0) + 1;
+    });
+
+    Object.entries(patientMap).forEach(([phc, count]) => {
+      list.push({
+        title: "Critical Patients",
+        message: `${count} critical patients`,
+        phcName: phc,
+        time: "Today",
+        color: "text-red-600",
+        icon: AlertTriangle,
+      });
+    });
+
+    // Bed Occupancy
+    phcs.forEach((phc) => {
+      const occupancy =
+        (phc.occupiedBeds / phc.totalBeds) * 100;
+
+      if (occupancy >= 85) {
+        list.push({
+          title: "High Bed Occupancy",
+          message: `${Math.round(
+            occupancy
+          )}% beds occupied`,
+          phcName: phc.name,
+          time: "Today",
+          color: "text-amber-600",
+          icon: BedDouble,
+        });
+      }
+    });
+
+    // Doctor Shortage
+    phcs.forEach((phc) => {
+      if (phc.doctorCount <= 1) {
+        list.push({
+          title: "Doctor Shortage",
+          message: `Only ${phc.doctorCount} doctor available`,
+          phcName: phc.name,
+          time: "Today",
+          color: "text-blue-600",
+          icon: UserCheck,
+        });
+      }
+    });
+
+    // Diagnostic Upgrade
+    tests.forEach((test) => {
+      if (test.availableTests < 8) {
+        list.push({
+          title: "Diagnostics Upgrade",
+          message: `${test.availableTests}/10 tests available`,
+          phcName: test.phcName,
+          time: test.lastAudit,
+          color: "text-purple-600",
+          icon: ClipboardList,
+        });
+      }
+    });
+
+    if (selectedPHC !== "All PHCs") {
+      list = list.filter(
+        (item) => item.phcName === selectedPHC
+      );
+    }
+
+    setNotifications(list);
+  }
+
   if (!open) return null;
 
   return (
@@ -57,7 +140,9 @@ function NotificationPanel({ open }) {
           </h2>
 
           <p className="text-sm text-slate-500">
-            Latest district updates
+            {selectedPHC === "All PHCs"
+              ? "Latest district updates"
+              : `Latest updates for ${selectedPHC}`}
           </p>
         </div>
 
@@ -65,36 +150,58 @@ function NotificationPanel({ open }) {
 
       <div className="max-h-[400px] overflow-y-auto">
 
-        {notifications.map((item) => {
-          const Icon = item.icon;
+        {notifications.length === 0 ? (
 
-          return (
-            <div
-              key={item.id}
-              className="flex gap-4 p-4 hover:bg-slate-50 cursor-pointer border-b"
-            >
+          <div className="p-8 text-center text-slate-500">
+            No notifications
+          </div>
 
-              <Icon className={`${item.color} mt-1`} size={20} />
+        ) : (
 
-              <div className="flex-1">
+          notifications.map((item, index) => {
 
-                <h3 className="font-semibold text-sm">
-                  {item.title}
-                </h3>
+            const Icon = item.icon;
 
-                <p className="text-sm text-slate-600 mt-1">
-                  {item.message}
-                </p>
+            return (
+              <div
+                key={index}
+                className="flex gap-4 p-4 hover:bg-slate-50 border-b"
+              >
 
-                <span className="text-xs text-slate-400">
-                  {item.time}
-                </span>
+                <Icon
+                  className={`${item.color} mt-1`}
+                  size={20}
+                />
+
+                <div className="flex-1">
+
+                  <h3 className="font-semibold text-sm">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-sm text-slate-600 mt-1">
+                    {item.message}
+                  </p>
+
+                  <div className="flex justify-between mt-2">
+
+                    <span className="text-xs text-teal-600 font-medium">
+                      {item.phcName}
+                    </span>
+
+                    <span className="text-xs text-slate-400">
+                      {item.time}
+                    </span>
+
+                  </div>
+
+                </div>
 
               </div>
+            );
+          })
 
-            </div>
-          );
-        })}
+        )}
 
       </div>
 

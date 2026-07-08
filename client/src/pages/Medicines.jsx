@@ -132,24 +132,20 @@ function Medicines() {
               <tr>
 
                 <th className="text-left px-6 py-4">
-                  {t.medicine}
-                </th>
+  {t.medicine}
+</th>
 
-                <th className="text-left px-6 py-4">
-                  {t.stock}
-                </th>
+<th className="text-left px-6 py-4">
+  {t.stock}
+</th>
 
-                <th className="text-left px-6 py-4">
-                  {t.required}
-                </th>
+<th className="text-left px-6 py-4">
+  {t.required}
+</th>
 
-                <th className="text-left px-6 py-4">
-                  {t.status}
-                </th>
-
-                <th className="text-left px-6 py-4">
-                  {t.transferFrom}
-                </th>
+<th className="text-left px-6 py-4">
+  {t.status}
+</th>
 
               </tr>
 
@@ -161,7 +157,7 @@ function Medicines() {
 
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan="4"
                     className="text-center py-8"
                   >
                     {t.loadingMedicines}
@@ -172,7 +168,7 @@ function Medicines() {
 
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan="4"
                     className="text-center py-8"
                   >
                     {t.noMedicinesFound}
@@ -216,10 +212,7 @@ function Medicines() {
 
                     </td>
 
-                    <td className="px-6 py-4">
-                      {medicine.transferFrom || "-"}
-                    </td>
-
+             
                   </tr>
 
                 ))

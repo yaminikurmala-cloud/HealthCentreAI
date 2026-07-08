@@ -421,6 +421,257 @@ aiEngine: "एआई इंजन",
 lastSync: "अंतिम सिंक",
 
 saveSettings: "सेटिंग्स सहेजें",
+
+// Tests
+tests: "परीक्षण",
+testsManagement: "डायग्नोस्टिक परीक्षण",
+testsManagementDesc: "सभी PHC में उपलब्ध डायग्नोस्टिक सुविधाओं की निगरानी करें।",
+addTests: "PHC परीक्षण जोड़ें",
+
+totalPHCs: "कुल PHC",
+testsAvailable: "उपलब्ध परीक्षण",
+fullyEquipped: "पूरी तरह सुसज्जित",
+needUpgrade: "उन्नयन आवश्यक",
+
+phc: "PHC",
+
+bloodPressure: "रक्तचाप",
+bloodSugar: "ब्लड शुगर",
+cbc: "CBC",
+malaria: "मलेरिया",
+dengue: "डेंगू",
+urine: "मूत्र परीक्षण",
+pregnancy: "गर्भावस्था परीक्षण",
+ecg: "ECG",
+xray: "एक्स-रे",
+ultrasound: "अल्ट्रासाउंड",
+
+actions: "कार्य",
+
+loadingTests: "परीक्षण डेटा लोड हो रहा है...",
+noTests: "कोई PHC परीक्षण रिकॉर्ड नहीं मिला।",
+
+addTestAvailability: "परीक्षण जोड़ें",
+editTestAvailability: "परीक्षण संपादित करें",
+
+save: "सहेजें",
+update: "अपडेट करें",
+cancel: "रद्द करें",
+
+deleteTestConfirm: "क्या आप इस PHC परीक्षण रिकॉर्ड को हटाना चाहते हैं?",
+aiStockPrediction: "एआई स्टॉक पूर्वानुमान",
+
+daysRemaining: "दिन शेष",
+
+transfer: "स्थानांतरित करें",
+
+unitsFrom: "यूनिट",
+
+order: "ऑर्डर करें",
+
+additionalUnits: "अतिरिक्त यूनिट",
+
+notifyDistrictStore:
+  "जिला चिकित्सा भंडार को सूचित करें।",
+
+stockHealthy:
+  "स्टॉक स्तर सुरक्षित है।",
+
+warning: "चेतावनी",
+
+low: "कम",
+stockPrediction: "स्टॉक पूर्वानुमान",
+
+stockPredictionDesc:
+  "दवाओं के स्टॉक समाप्त होने की एआई आधारित भविष्यवाणी।",
+
+medicine: "दवा",
+
+stock: "स्टॉक",
+
+dailyUsage: "दैनिक उपयोग",
+
+daysLeft: "शेष दिन",
+
+status: "स्थिति",
+
+loading: "लोड हो रहा है...",
+criticalMedicines: "गंभीर दवाइयाँ",
+
+warningMedicines: "चेतावनी दवाइयाँ",
+
+healthyMedicines: "सुरक्षित दवाइयाँ",
+
+transferRequired: "स्थानांतरण आवश्यक",
+forecast: "पूर्वानुमान",
+medicineTransferInitiated:
+  "दवा स्थानांतरण शुरू किया गया",
+
+medicineTransferDesc:
+  "पीएचसी नुन्ना से पीएचसी ताडेपल्ली को 40 पैरासिटामोल भेजी गई।",
+
+criticalMedicineDetected:
+  "गंभीर दवा की पहचान हुई",
+phcOverview: "पीएचसी अवलोकन",
+
+livePHCOverview:
+  "सभी प्राथमिक स्वास्थ्य केंद्रों का लाइव अवलोकन।",
+
+loading: "लोड हो रहा है...",
+criticalMedicineDesc:
+  "इंसुलिन का स्टॉक न्यूनतम सीमा से नीचे चला गया है।",
+
+  bedAvailability: "बेड उपलब्धता",
+
+bedAvailabilityDesc:
+  "सभी प्राथमिक स्वास्थ्य केंद्रों में बेड की उपलब्धता और उपयोग की लाइव निगरानी।",
+
+totalBeds: "कुल बेड",
+
+occupiedBeds: "भरे हुए बेड",
+
+availableBeds: "उपलब्ध बेड",
+
+occupancy: "उपयोग",
+
+criticalPHCs: "गंभीर पीएचसी",
+
+warning: "चेतावनी",
+healthy: "सामान्य",
+critical: "गंभीर",
+// Resource Allocation
+resourceAllocation: "AI संसाधन आवंटन",
+
+resourceAllocationDesc:
+  "सभी PHC के लिए डॉक्टर, बेड, दवाइयों और परीक्षण संसाधनों हेतु AI आधारित सुझाव।",
+
+doctorsNeeded: "आवश्यक डॉक्टर",
+
+bedsNeeded: "आवश्यक बेड",
+
+medicineShortages: "दवा की कमी",
+
+healthScore: "स्वास्थ्य स्कोर",
+
+priority: "प्राथमिकता",
+
+patientsPerDoctor: "प्रति डॉक्टर मरीज",
+
+aiRecommendation: "AI सिफारिश",
+
+low: "कम",
+
+medium: "मध्यम",
+
+high: "उच्च",
+
+deployDoctor: "1 अतिरिक्त डॉक्टर नियुक्त करें",
+
+replenishMedicines: "महत्वपूर्ण दवाइयों की आपूर्ति करें",
+
+increaseBeds: "बेड क्षमता बढ़ाएँ",
+
+upgradeDiagnostics: "जांच सुविधाओं का उन्नयन करें",
+
+noActionRequired: "कोई कार्रवाई आवश्यक नहीं",
+patientsPerDoctor: "प्रति डॉक्टर मरीज",
+// ================= AI Resource Allocation =================
+
+resourceAllocation: "AI संसाधन आवंटन",
+
+resourceAllocationDesc:
+  "सभी PHC के लिए डॉक्टर, बेड, दवाइयों और जांच संसाधनों हेतु AI आधारित सिफारिशें।",
+
+healthScore: "स्वास्थ्य स्कोर",
+
+priority: "प्राथमिकता",
+
+doctorsRequired: "आवश्यक डॉक्टर",
+
+aiRecommendation: "AI सिफारिश",
+
+deployDoctor: "अतिरिक्त डॉक्टर नियुक्त करें",
+
+replenishMedicines: "दवाइयों की आपूर्ति बढ़ाएँ",
+
+increaseBeds: "बेड क्षमता बढ़ाएँ",
+
+upgradeDiagnostics: "जांच सुविधाओं का उन्नयन करें",
+
+noActionRequired: "कोई कार्रवाई आवश्यक नहीं",
+
+doctorReason:
+  "{patients} मरीजों के लिए वर्तमान में {doctors} डॉक्टर उपलब्ध हैं। AI अतिरिक्त {required} डॉक्टर नियुक्त करने की सलाह देता है।",
+
+medicineReason:
+  "{count} दवाइयाँ कम स्टॉक या गंभीर स्थिति में हैं।",
+
+bedReason:
+  "कुल {total} बेड में से केवल {available} बेड उपलब्ध हैं।",
+
+testReason:
+  "वर्तमान में केवल {tests} डायग्नोस्टिक परीक्षण उपलब्ध हैं।",
+
+healthyReason:
+  "सभी स्वास्थ्य संसाधन सुरक्षित स्तर पर उपलब्ध हैं।",
+  // ===== रोग प्रकोप पूर्व चेतावनी =====
+
+diseaseOutbreak: "रोग प्रकोप चेतावनी",
+
+diseaseOutbreakDesc:
+  "सभी PHC के लिए AI आधारित रोग निगरानी एवं प्रारंभिक प्रकोप पहचान।",
+
+activeAlerts: "सक्रिय अलर्ट",
+
+highRiskPHCs: "उच्च जोखिम PHC",
+
+diseasesMonitored: "निगरानी की जा रही बीमारियाँ",
+
+aiConfidence: "AI विश्वसनीयता",
+
+currentCases: "वर्तमान मामले",
+
+normalAverage: "सामान्य औसत",
+
+risk: "जोखिम",
+
+confidence: "विश्वास स्तर",
+
+disease: "रोग",
+
+possibleOutbreak: "संभावित रोग प्रकोप",
+
+noOutbreakDetected: "कोई प्रकोप नहीं मिला",
+
+noOutbreakDesc:
+  "सभी बीमारियाँ सामान्य सीमा के भीतर हैं।",
+
+deployMedicalTeam:
+  "तुरंत चिकित्सा दल भेजें",
+
+increaseMedicineStock:
+  "दवाइयों का स्टॉक बढ़ाएँ",
+
+notifyDistrictOfficer:
+  "जिला स्वास्थ्य अधिकारी को सूचित करें",
+
+startVillageScreening:
+  "गाँव स्तर पर निगरानी और जाँच शुरू करें",
+
+high: "उच्च",
+
+medium: "मध्यम",
+
+low: "कम",
+applyRecommendation:
+  "सिफारिश लागू करें",
+
+applyingRecommendation:
+  "लागू किया जा रहा है...",
+
+recommendationApplied:
+  "सिफारिश लागू हो गई",
+  aiInsights: "ఏఐ విశ్లేషణలు",
 };
 
 export default hi;

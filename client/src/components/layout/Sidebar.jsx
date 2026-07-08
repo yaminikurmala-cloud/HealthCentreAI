@@ -6,7 +6,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import {
   LayoutDashboard,
   Pill,
-  Bed,
+  Building2,
   Stethoscope,
   Users,
   FileBarChart,
@@ -15,6 +15,12 @@ import {
   Plus,
   ChevronDown,
   LogOut,
+  FlaskConical,
+  TrendingUp,
+  Package,
+  Bed,
+  ShieldAlert,
+  Siren,
 } from "lucide-react";
 
 function Sidebar() {
@@ -26,6 +32,27 @@ function Sidebar() {
       icon: LayoutDashboard,
       label: t.dashboard,
       path: "/dashboard",
+    },
+
+    {
+      icon: Package,
+      label: t.stockPrediction,
+      path: "/stock-prediction",
+    },
+    {
+      icon: Bed,
+      label: t.bedAvailability,
+      path: "/bed-availability",
+    },
+    {
+      icon: ShieldAlert,
+      label: t.resourceAllocation,
+      path: "/resource-allocation",
+    },
+    {
+      icon: Siren,
+      label: t.diseaseOutbreak,
+      path: "/disease-outbreak",
     },
     {
       icon: Users,
@@ -43,20 +70,25 @@ function Sidebar() {
       path: "/doctors",
     },
     {
-      icon: Bed,
+      icon: Building2,
       label: t.phcs,
       path: "/phcs",
+    },
+    {
+      icon: FlaskConical,
+      label: t.tests,
+      path: "/tests",
     },
     {
       icon: FileBarChart,
       label: t.analytics,
       path: "/analytics",
     },
-    {
-      icon: Bot,
-      label: t.aiAssistant,
-      path: "/assistant",
-    },
+   {
+  icon: Bot,
+  label: t.aiInsights,
+  path: "/assistant",
+},
     {
       icon: Settings,
       label: t.settings,
@@ -75,11 +107,11 @@ function Sidebar() {
 
   return (
     <aside className="w-72 bg-[#083344] text-white flex flex-col justify-between min-h-screen">
+
       {/* Top */}
-
       <div>
-        {/* Logo */}
 
+        {/* Logo */}
         <div className="px-6 pt-6">
           <div className="flex items-center gap-4">
 
@@ -101,7 +133,6 @@ function Sidebar() {
         </div>
 
         {/* Navigation */}
-
         <nav className="mt-10 px-4">
 
           {menuItems.map((item) => {
@@ -120,16 +151,20 @@ function Sidebar() {
                 }
               >
                 <Icon size={18} />
-                <span>{item.label}</span>
+
+                <span className="text-sm font-medium">
+                  {item.label}
+                </span>
+
               </NavLink>
             );
           })}
 
         </nav>
+
       </div>
 
       {/* Bottom */}
-
       <div className="border-t border-slate-700 p-5">
 
         <div className="flex items-center justify-between mb-5">
@@ -167,6 +202,7 @@ function Sidebar() {
         </button>
 
       </div>
+
     </aside>
   );
 }

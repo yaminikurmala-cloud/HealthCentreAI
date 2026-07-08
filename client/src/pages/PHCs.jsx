@@ -7,8 +7,9 @@ import AddPHCModal from "../components/PHCs/AddPHCModal";
 
 import { useLanguage } from "../context/LanguageContext";
 
+import { getDistrictData } from "../services/districtService";
+
 import {
-  getPHCs,
   addPHC,
   updatePHC,
   deletePHC,
@@ -31,9 +32,10 @@ function PHCs() {
     try {
       setLoading(true);
 
-      const data = await getPHCs();
+      const data = await getDistrictData();
 
-      setPHCs(data);
+      setPHCs(data.overview);
+
     } catch (error) {
       console.error("Error loading PHCs:", error);
     } finally {
@@ -53,6 +55,7 @@ function PHCs() {
 
       setEditingPHC(null);
       setIsModalOpen(false);
+
     } catch (error) {
       console.error("Error saving PHC:", error);
     }
@@ -69,6 +72,7 @@ function PHCs() {
       await deletePHC(id);
 
       await loadPHCs();
+
     } catch (error) {
       console.error("Error deleting PHC:", error);
     }

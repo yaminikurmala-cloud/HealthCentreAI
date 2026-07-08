@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { getDashboardData } from "../../services/dashboardService";
 import { useLanguage } from "../../context/LanguageContext";
+import { usePHC } from "../../context/PHCContext";
+
+import { getDashboardData } from "../../services/dashboardService";
 
 import {
   Users,
@@ -16,84 +18,70 @@ import SkeletonCard from "../SkeletonCard";
 
 function KPIGrid() {
   const { t } = useLanguage();
+  const { selectedPHC } = usePHC();
 
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadData() {
-      const data = await getDashboardData();
+    loadDashboard();
+  }, [selectedPHC]);
 
-      if (data) {
-        setDashboardData(data);
-      }
+  async function loadDashboard() {
+    setLoading(true);
 
-      setLoading(false);
-    }
+    const data = await getDashboardData(selectedPHC);
 
-    loadData();
-  }, []);
+    setDashboardData(data);
+
+    setLoading(false);
+  }
 
   const cards = [
     {
       title: t.patientsToday,
-      value: dashboardData?.patientsToday,
+      value: dashboardData?.patientsToday || 0,
       icon: Users,
-      trend: t.trendPatients,
-      trendType: "up",
-      goodWhenUp: true,
+   
     },
     {
       title: t.medicineItems,
-      value: dashboardData?.medicineItems,
+      value: dashboardData?.medicineItems || 0,
       icon: Pill,
-      trend: t.trendMedicines,
-      trendType: "up",
-      goodWhenUp: true,
+      
     },
     {
       title: t.availableBeds,
-      value: dashboardData?.availableBeds,
+      value: dashboardData?.availableBeds || 0,
       icon: Bed,
-      trend: t.trendBeds,
-      trendType: "up",
-      goodWhenUp: true,
+     
     },
     {
       title: t.doctorsOnDuty,
-      value: dashboardData?.doctorsOnDuty,
+      value: dashboardData?.doctorsOnDuty || 0,
       icon: Stethoscope,
-      trend: t.noChange,
-      trendType: "same",
-      goodWhenUp: true,
+      
     },
     {
       title: t.testsAvailable,
-      value: dashboardData?.testsAvailable,
+      value: dashboardData?.testsAvailable || 0,
       icon: FlaskConical,
-      trend: t.trendTests,
-      trendType: "up",
-      goodWhenUp: true,
+   
     },
     {
       title: t.emergencyCases,
-      value: dashboardData?.emergencyCases,
+      value: dashboardData?.emergencyCases || 0,
       icon: Ambulance,
-      trend: t.trendEmergency,
-      trendType: "up",
-      goodWhenUp: false,
+    
     },
   ];
 
   if (loading) {
     return (
       <section className="grid grid-cols-3 gap-6 mt-8">
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
+        {[...Array(6)].map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
       </section>
     );
   }

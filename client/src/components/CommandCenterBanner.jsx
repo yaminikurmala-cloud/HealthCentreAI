@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import {
   Activity,
   Ambulance,
@@ -9,9 +10,35 @@ import {
 
 import { useLanguage } from "../context/LanguageContext";
 
+import { getPatients } from "../services/patientService";
+import { getDoctors } from "../services/doctorService";
+import { getMedicines } from "../services/medicineService";
+
 function CommandCenterBanner() {
   const { t } = useLanguage();
+const [emergencyCases, setEmergencyCases] = useState(0);
+const [doctorCount, setDoctorCount] = useState(0);
+const [criticalMedicines, setCriticalMedicines] = useState(0);
 
+useEffect(() => {
+  loadSummary();
+}, []);
+
+async function loadSummary() {
+  const patients = await getPatients();
+  const doctors = await getDoctors();
+  const medicines = await getMedicines();
+
+  setEmergencyCases(
+    patients.filter((p) => p.status === "Critical").length
+  );
+
+  setDoctorCount(doctors.length);
+
+  setCriticalMedicines(
+    medicines.filter((m) => m.status === "Critical").length
+  );
+}
   return (
     <motion.div
       initial={{ opacity: 0, y: 25 }}
@@ -45,6 +72,8 @@ function CommandCenterBanner() {
 
       <div className="grid grid-cols-4 gap-6 mt-8">
 
+        {/* Emergency Cases */}
+
         <motion.div
           whileHover={{ y: -4 }}
           className="bg-white/10 backdrop-blur-md rounded-2xl p-5"
@@ -56,9 +85,11 @@ function CommandCenterBanner() {
           </p>
 
           <h3 className="text-4xl font-bold mt-2">
-            08
+            {emergencyCases}
           </h3>
         </motion.div>
+
+        {/* Doctors */}
 
         <motion.div
           whileHover={{ y: -4 }}
@@ -71,9 +102,11 @@ function CommandCenterBanner() {
           </p>
 
           <h3 className="text-4xl font-bold mt-2">
-            24
+            {doctorCount}
           </h3>
         </motion.div>
+
+        {/* Critical Medicines */}
 
         <motion.div
           whileHover={{ y: -4 }}
@@ -86,27 +119,29 @@ function CommandCenterBanner() {
           </p>
 
           <h3 className="text-4xl font-bold mt-2">
-            03
+            {criticalMedicines}
           </h3>
         </motion.div>
+
+        {/* AI Prediction */}
 
         <motion.div
           whileHover={{ y: -4 }}
           className="bg-white/10 backdrop-blur-md rounded-2xl p-5"
         >
-          <Brain className="mb-4" size={28} />
+   <Brain className="mb-4" size={28} />
 
-          <p className="text-teal-100 text-sm">
-            {t.aiPrediction}
-          </p>
+<p className="text-teal-100 text-sm">
+  AI Resource Engine
+</p>
 
-          <h3 className="text-lg font-semibold mt-2">
-            {t.noShortages}
-          </h3>
+<h3 className="text-lg font-semibold mt-2">
+  Active
+</h3>
 
-          <p className="text-teal-100 text-sm mt-1">
-            {t.next48Hours}
-          </p>
+<p className="text-teal-100 text-sm mt-1">
+  Continuously analyzing district healthcare data
+</p>
         </motion.div>
 
       </div>

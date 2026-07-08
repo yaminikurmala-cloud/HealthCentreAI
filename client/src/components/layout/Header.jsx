@@ -1,3 +1,4 @@
+import { usePHC } from "../../context/PHCContext";
 import { useState, useEffect } from "react";
 import {
   Bell,
@@ -9,6 +10,7 @@ import {
 
 import NotificationPanel from "../NotificationPanel";
 import { useLanguage } from "../../context/LanguageContext";
+import { getDashboardHeaderData } from "../../services/dashboardHeaderService";
 
 function Header() {
   const { t, language } = useLanguage();
@@ -16,13 +18,29 @@ function Header() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  const [phcs, setPHCs] = useState([]);
+  const [score, setScore] = useState(0);
+  const [status, setStatus] = useState("");
+
+  const { selectedPHC, setSelectedPHC } = usePHC();
+
   useEffect(() => {
+    loadHeader();
+
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
+
+  async function loadHeader() {
+    const data = await getDashboardHeaderData();
+
+    setPHCs(data.phcs);
+    setScore(data.score);
+    setStatus(data.status);
+  }
 
   const getGreeting = () => {
     const hour = currentTime.getHours();
@@ -49,10 +67,20 @@ function Header() {
 
   const formattedTime = currentTime.toLocaleTimeString(locale);
 
+  function getStatusColor() {
+    if (status === "Critical")
+      return "bg-red-100 text-red-700";
+
+    if (status === "Needs Attention")
+      return "bg-yellow-100 text-yellow-700";
+
+    return "bg-green-100 text-green-700";
+  }
+
   return (
     <header className="bg-white border-b border-slate-200 px-8 py-5 flex items-center justify-between">
 
-      {/* Left */}
+      {/* LEFT */}
 
       <div>
 
@@ -82,22 +110,36 @@ function Header() {
 
           <div className="flex items-center gap-2 text-teal-700">
             <Globe size={16} />
-            <span>4 {t.phcsConnected}</span>
+            <span>
+              {phcs.length} {t.phcsConnected}
+            </span>
           </div>
 
         </div>
 
       </div>
 
-      {/* Right */}
+      {/* RIGHT */}
 
       <div className="flex items-center gap-6">
 
-        <select className="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white">
-          <option>{t.allPHCs}</option>
-          <option>PHC Kothapalli</option>
-          <option>PHC Nunna</option>
-          <option>PHC Tadepalli</option>
+        <select
+          value={selectedPHC}
+          onChange={(e) => setSelectedPHC(e.target.value)}
+          className="border border-slate-300 rounded-lg px-4 py-2 text-sm bg-white"
+        >
+          <option value="All PHCs">
+            All PHCs
+          </option>
+
+          {phcs.map((phc) => (
+            <option
+              key={phc.id}
+              value={phc.name}
+            >
+              {phc.name}
+            </option>
+          ))}
         </select>
 
         <div className="relative">
@@ -123,21 +165,23 @@ function Header() {
         <div className="bg-teal-50 border border-teal-200 rounded-xl px-4 py-2 shadow-sm">
 
           <p className="text-xs text-slate-500">
-            {t.districtHealthScore}
+            District Health Score
           </p>
 
           <div className="flex items-center gap-2 mt-1">
 
             <span className="text-2xl font-bold text-teal-700">
-              84
+              {score}
             </span>
 
             <span className="text-slate-500">
               /100
             </span>
 
-            <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full">
-              {t.stable}
+            <span
+              className={`text-xs font-semibold px-2 py-1 rounded-full ${getStatusColor()}`}
+            >
+              {status}
             </span>
 
           </div>

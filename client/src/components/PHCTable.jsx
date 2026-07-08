@@ -1,121 +1,184 @@
-import { useLanguage } from "../context/LanguageContext";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
+import { useLanguage } from "../context/LanguageContext";
+import { getPHCOverview } from "../services/phcOverviewService";
+import { usePHC } from "../context/PHCContext";
 function PHCTable() {
   const { t } = useLanguage();
+const { selectedPHC } = usePHC();
 
-  const phcs = [
-    {
-      name: "PHC Tadepalli",
-      patients: 235,
-      doctors: 6,
-      status: "Active",
-    },
-    {
-      name: "PHC Mangalagiri",
-      patients: 180,
-      doctors: 5,
-      status: "Active",
-    },
-    {
-      name: "PHC Amaravathi",
-      patients: 145,
-      doctors: 4,
-      status: "Active",
-    },
-    {
-      name: "PHC Tenali",
-      patients: 210,
-      doctors: 7,
-      status: "Active",
-    },
-  ];
+  const [phcs, setPhcs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const getStatus = (status) => {
+  useEffect(() => {
+    loadPHCs();
+  }, []);
+
+  async function loadPHCs() {
+    try {
+      setLoading(true);
+
+      const data = await getPHCOverview();
+
+      setPhcs(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function getStatusText(status) {
     switch (status) {
-      case "Active":
-        return t.active;
+      case "healthy":
+        return t.healthy;
 
-      case "Inactive":
-        return t.inactive;
+      case "attention":
+        return t.needsAttention;
+
+      case "critical":
+        return t.critical;
 
       default:
         return status;
     }
-  };
+  }
+
+  function getStatusColor(status) {
+    switch (status) {
+      case "healthy":
+        return "bg-green-100 text-green-700";
+
+      case "attention":
+        return "bg-yellow-100 text-yellow-700";
+
+      case "critical":
+        return "bg-red-100 text-red-700";
+
+      default:
+        return "bg-slate-100 text-slate-700";
+    }
+  }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm p-6">
+    <motion.div
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6"
+    >
+      <div className="mb-5">
 
-      <h2 className="text-xl font-bold mb-4">
-        {t.phcOverview}
-      </h2>
+        <h2 className="text-2xl font-bold text-slate-800">
+          {t.phcOverview}
+        </h2>
 
-      <table className="w-full">
+        <p className="text-sm text-slate-500 mt-1">
+          {t.livePHCOverview}
+        </p>
 
-        <thead className="border-b">
+      </div>
 
-          <tr>
+      {loading ? (
+        <div className="text-center py-10">
+          {t.loading}
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
 
-            <th className="text-left py-3">
-              {t.phc}
-            </th>
+          <table className="w-full">
 
-            <th className="text-left py-3">
-              {t.patients}
-            </th>
+            <thead>
 
-            <th className="text-left py-3">
-              {t.doctors}
-            </th>
+              <tr className="border-b">
 
-            <th className="text-left py-3">
-              {t.status}
-            </th>
+                <th className="text-left py-3">
+                  {t.phc}
+                </th>
 
-          </tr>
+                <th className="text-center py-3">
+                  {t.patients}
+                </th>
 
-        </thead>
+                <th className="text-center py-3">
+                  {t.doctors}
+                </th>
 
-        <tbody>
+                <th className="text-center py-3">
+                  {t.medicines}
+                </th>
 
-          {phcs.map((phc) => (
+                <th className="text-center py-3">
+                  {t.tests}
+                </th>
 
-            <tr
-              key={phc.name}
-              className="border-b"
-            >
+                <th className="text-center py-3">
+                  {t.status}
+                </th>
 
-              <td className="py-3">
-                {phc.name}
-              </td>
+              </tr>
 
-              <td>
-                {phc.patients}
-              </td>
+            </thead>
 
-              <td>
-                {phc.doctors}
-              </td>
+            <tbody>
 
-              <td>
+            {phcs
+  .filter(
+    (item) =>
+      selectedPHC === "All PHCs" ||
+      item.name === selectedPHC
+  )
+  .map((item) => (
 
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+    <tr
+      key={item.id}
+      className="border-b hover:bg-slate-50"
+    >
 
-                  {getStatus(phc.status)}
+      <td className="py-4 font-semibold">
+        {item.name}
+      </td>
 
-                </span>
+      <td className="text-center">
+        {item.patientCount}
+      </td>
 
-              </td>
+      <td className="text-center">
+        {item.doctorCount}
+      </td>
 
-            </tr>
+      <td className="text-center">
+        {item.medicineCount}
+      </td>
 
-          ))}
+      <td className="text-center">
+        {item.availableTests}/10
+      </td>
 
-        </tbody>
+      <td className="text-center">
 
-      </table>
+        <span
+          className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+            item.status
+          )}`}
+        >
+          {getStatusText(item.status)}
+        </span>
 
-    </div>
+      </td>
+
+    </tr>
+
+))}
+            </tbody>
+
+          </table>
+
+        </div>
+      )}
+
+    </motion.div>
   );
 }
 

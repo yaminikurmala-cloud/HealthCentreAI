@@ -6,12 +6,15 @@ import App from "./App.jsx";
 import "./index.css";
 
 import { LanguageProvider } from "./context/LanguageContext";
+import { PHCProvider } from "./context/PHCContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <LanguageProvider>
-        <App />
+        <PHCProvider>
+          <App />
+        </PHCProvider>
       </LanguageProvider>
     </BrowserRouter>
   </StrictMode>

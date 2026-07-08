@@ -1,163 +1,152 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Brain, ChevronRight } from "lucide-react";
-import { getAlerts } from "../services/alertService";
-import AIDetailsModal from "./AIDetailsModal";
+import { Link } from "react-router-dom";
+
+import { getTopRecommendations } from "../services/dashboardRecommendationService";
 import { useLanguage } from "../context/LanguageContext";
+import { usePHC } from "../context/PHCContext";
 
 function AIAlerts() {
   const { t } = useLanguage();
+  const { selectedPHC } = usePHC();
 
-  const [alerts, setAlerts] = useState([]);
-  const [selectedAlert, setSelectedAlert] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
-    async function loadAlerts() {
-      const data = await getAlerts();
-      setAlerts(data);
-    }
+    loadRecommendations();
+  }, [selectedPHC]);
 
-    loadAlerts();
-  }, []);
+  async function loadRecommendations() {
+    const data = await getTopRecommendations();
 
-  const getSeverityLabel = (severity) => {
-    switch (severity) {
-      case "Critical":
-        return t.critical;
+    const filtered =
+      selectedPHC === "All PHCs"
+        ? data
+        : data.filter(
+            (item) => item.phcName === selectedPHC
+          );
 
-      case "Warning":
-        return t.warning;
+    setRecommendations(filtered);
+  }
 
-      case "Normal":
-        return t.normal;
-
-      default:
-        return severity;
-    }
-  };
-
-  const getSeverityColor = (severity) => {
-    switch (severity) {
+  function getPriorityColor(priority) {
+    switch (priority) {
       case "Critical":
         return "bg-red-100 text-red-700";
 
-      case "Warning":
-        return "bg-amber-100 text-amber-700";
-
-      case "Normal":
-        return "bg-green-100 text-green-700";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-700";
 
       default:
-        return "bg-slate-100 text-slate-700";
+        return "bg-green-100 text-green-700";
     }
-  };
+  }
+
+  function formatRecommendation(key) {
+    switch (key) {
+      case "deployDoctor":
+        return "Deploy Additional Doctor";
+
+      case "replenishMedicines":
+        return "Replenish Medicine Stock";
+
+      case "increaseBeds":
+        return "Increase Bed Capacity";
+
+      case "upgradeDiagnostics":
+        return "Upgrade Diagnostic Facilities";
+
+      default:
+        return "No Action Required";
+    }
+  }
 
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        whileHover={{ y: -2 }}
-        className="bg-white rounded-2xl shadow-sm border border-slate-200 h-[360px] p-6 flex flex-col"
-      >
-        {/* Header */}
+    <motion.div
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="bg-white rounded-2xl shadow-sm border border-slate-200 h-[360px] p-6 flex flex-col"
+    >
+      {/* Header */}
 
-        <div className="flex items-center gap-3 mb-6">
-          <Brain className="text-teal-700" />
+      <div className="flex items-center gap-3 mb-6">
+        <Brain className="text-teal-700" />
 
-          <div>
-            <h2 className="text-xl font-bold">
-              {t.aiDecisionEngine}
-            </h2>
+        <div>
+          <h2 className="text-xl font-bold">
+            Recent AI Recommendations
+          </h2>
 
-            <p className="text-sm text-slate-500">
-              {t.liveRecommendations}
-            </p>
+          <p className="text-sm text-slate-500">
+            {selectedPHC === "All PHCs"
+              ? "Generated for all PHCs"
+              : `Generated for ${selectedPHC}`}
+          </p>
+        </div>
+      </div>
+
+      {/* Recommendations */}
+
+      <div className="space-y-3 flex-1 overflow-y-auto">
+
+        {recommendations.length === 0 ? (
+
+          <div className="text-center text-slate-500 py-10">
+            No recommendations available.
           </div>
-        </div>
 
-        {/* Alerts */}
+        ) : (
 
-        <div className="space-y-3 flex-1 overflow-y-auto pr-1">
+          recommendations.map((item) => {
 
-          {alerts.map((item, index) => (
+            const rec = item.recommendations?.[0];
 
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                delay: index * 0.15,
-                duration: 0.4,
-              }}
-              whileHover={{ x: 4 }}
-              className="border rounded-xl p-4 transition-all duration-300 hover:bg-slate-50 hover:border-teal-300 cursor-pointer"
-            >
+            return (
+              <div
+                key={item.id}
+                className="border rounded-xl p-4 hover:bg-slate-50 transition"
+              >
+                <div className="flex justify-between items-center">
 
-              <div className="flex justify-between items-center">
+                  <h3 className="font-semibold">
+                    {item.phcName}
+                  </h3>
 
-                <h3 className="font-semibold text-sm">
-                  {item.title}
-                </h3>
+                  <span
+                    className={`text-xs px-3 py-1 rounded-full ${getPriorityColor(
+                      item.priority
+                    )}`}
+                  >
+                    {item.priority}
+                  </span>
 
-                <span
-                  className={`text-xs px-3 py-1 rounded-full ${getSeverityColor(
-                    item.severity
-                  )}`}
-                >
-                  {getSeverityLabel(item.severity)}
-                </span>
+                </div>
 
-              </div>
-
-              <p className="text-sm text-slate-600 mt-2">
-                {item.message}
-              </p>
-
-              <p className="text-sm mt-2 font-medium text-teal-700">
-                → {item.recommendation}
-              </p>
-
-              <div className="flex justify-between mt-4">
-
-                <span className="text-xs text-slate-400">
-                  {t.confidence} {item.confidence}%
-                </span>
-
-                <motion.button
-                  whileHover={{ x: 2 }}
-                  whileTap={{ scale: 0.96 }}
-                  onClick={() => {
-                    setSelectedAlert(item);
-                    setModalOpen(true);
-                  }}
-                  className="flex items-center gap-1 text-teal-700 text-sm font-medium hover:text-teal-900"
-                >
-                  {t.view}
-                  <ChevronRight size={15} />
-                </motion.button>
+                <p className="text-slate-600 text-sm mt-2">
+                  {rec
+                    ? formatRecommendation(rec.key)
+                    : "No recommendation"}
+                </p>
 
               </div>
+            );
+          })
 
-            </motion.div>
+        )}
 
-          ))}
+      </div>
 
-        </div>
+      <Link
+        to="/resource-allocation"
+        className="flex justify-end items-center gap-1 mt-5 text-teal-700 hover:text-teal-900 font-medium"
+      >
+        View All
+        <ChevronRight size={18} />
+      </Link>
 
-      </motion.div>
-
-      <AIDetailsModal
-        open={modalOpen}
-        alert={selectedAlert}
-        onClose={() => {
-          setModalOpen(false);
-          setSelectedAlert(null);
-        }}
-      />
-    </>
+    </motion.div>
   );
 }
 

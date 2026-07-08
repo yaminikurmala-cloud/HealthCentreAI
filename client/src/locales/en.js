@@ -310,6 +310,7 @@ doctorsManagementDesc: "View and manage doctors across all PHCs.",
 addDoctor: "Add Doctor",
 editDoctor: "Edit Doctor",
 doctor: "Doctor",
+aiInsights: "AI Insights",
 doctorName: "Doctor Name",
 specialization: "Specialization",
 specializations: "Specializations",
@@ -420,6 +421,263 @@ aiEngine: "AI Engine",
 lastSync: "Last Sync",
 
 saveSettings: "Save Settings",
+// Tests
+tests: "Tests",
+testsManagement: "Diagnostic Tests",
+testsManagementDesc: "Monitor diagnostic facilities available across PHCs.",
+addTests: "Add PHC Tests",
+
+totalPHCs: "Total PHCs",
+testsAvailable: "Tests Available",
+fullyEquipped: "Fully Equipped",
+needUpgrade: "Need Upgrade",
+
+phc: "PHC",
+
+bloodPressure: "Blood Pressure",
+bloodSugar: "Blood Sugar",
+cbc: "CBC",
+malaria: "Malaria",
+dengue: "Dengue",
+urine: "Urine Test",
+pregnancy: "Pregnancy Test",
+ecg: "ECG",
+xray: "X-Ray",
+ultrasound: "Ultrasound",
+
+actions: "Actions",
+
+loadingTests: "Loading Test Availability...",
+noTests: "No PHC Test Records Found.",
+
+addTestAvailability: "Add Test Availability",
+editTestAvailability: "Edit Test Availability",
+
+save: "Save",
+update: "Update",
+cancel: "Cancel",
+
+deleteTestConfirm: "Are you sure you want to delete this PHC test record?",
+forecast: "Forecast",
+
+aiDemandForecast: "AI Demand Forecast",
+
+aiDemandForecastDesc:
+"Predict patient demand and identify PHCs requiring intervention.",
+
+loadingForecast:"Generating AI Forecast...",
+
+healthy:"Healthy",
+
+needsAttention:"Needs Attention",
+
+currentPatients:"Current Patients",
+
+forecastPatients:"Forecast Patients",
+
+healthScore:"Health Score",
+
+aiRecommendation:"AI Recommendation",
+
+aiHealthyRecommendation:
+"Current resources are sufficient. Continue routine monitoring.",
+
+aiAttentionRecommendation:
+"Increase medicine stock and monitor patient inflow.",
+
+aiCriticalRecommendation:
+"Immediate intervention required. Deploy doctors and replenish medicines.",
+
+aiStockPrediction: "AI Stock Prediction",
+
+daysRemaining: "days remaining",
+
+transfer: "Transfer",
+
+unitsFrom: "units from",
+
+order: "Order",
+
+additionalUnits: "additional units",
+
+notifyDistrictStore:
+  "Notify District Medical Store.",
+
+stockHealthy:
+  "Stock level is healthy.",
+
+warning: "Warning",
+
+low: "Low",
+stockPrediction: "Stock Prediction",
+
+stockPredictionDesc:
+  "AI-powered prediction of medicine stock-outs with transfer and replenishment recommendations.",
+
+medicine: "Medicine",
+
+stock: "Stock",
+
+dailyUsage: "Daily Usage",
+
+daysLeft: "Days Left",
+
+status: "Status",
+
+loading: "Loading...",
+criticalMedicines: "Critical Medicines",
+
+warningMedicines: "Warning Medicines",
+
+healthyMedicines: "Healthy Medicines",
+
+transferRequired: "Transfer Required",
+medicineTransferInitiated: "Medicine Transfer Initiated",
+
+medicineTransferDesc:
+  "Transferred 40 Paracetamol from PHC Nunna to PHC Tadepalli.",
+
+criticalMedicineDetected:
+  "Critical Medicine Detected",
+phcOverview: "PHC Overview",
+
+livePHCOverview:
+  "Live overview of all Primary Health Centres.",
+
+loading: "Loading...",
+criticalMedicineDesc:
+  "Insulin stock has fallen below the minimum threshold.",
+
+  bedAvailability: "Bed Availability",
+
+bedAvailabilityDesc:
+  "Live monitoring of bed occupancy across all Primary Health Centres.",
+
+totalBeds: "Total Beds",
+
+occupiedBeds: "Occupied Beds",
+
+availableBeds: "Available Beds",
+
+occupancy: "Occupancy",
+
+criticalPHCs: "Critical PHCs",
+
+warning: "Warning",
+healthy: "Healthy",
+critical: "Critical",
+// Resource Allocation
+resourceAllocation: "AI Resource Allocation",
+
+resourceAllocationDesc:
+  "AI-powered recommendations for doctors, beds, medicines and diagnostic resources across PHCs.",
+
+doctorsNeeded: "Doctors Needed",
+
+bedsNeeded: "Beds Needed",
+
+medicineShortages: "Medicine Shortages",
+
+healthScore: "Health Score",
+
+priority: "Priority",
+
+patientsPerDoctor: "Patients / Doctor",
+
+aiRecommendation: "AI Recommendation",
+
+low: "Low",
+
+medium: "Medium",
+
+high: "High",
+
+deployDoctor: "Deploy 1 additional doctor",
+
+replenishMedicines: "Replenish critical medicines",
+
+increaseBeds: "Increase bed capacity",
+
+upgradeDiagnostics: "Upgrade diagnostic facilities",
+
+noActionRequired: "No action required",
+
+doctorsRequired: "Doctors Required",
+key: "replenishMedicines",
+key: "increaseBeds",
+key: "upgradeDiagnostics",
+key: "noActionRequired",
+deployDoctor: "Deploy additional doctor",
+replenishMedicines: "Replenish medicine stock",
+increaseBeds: "Increase bed capacity",
+upgradeDiagnostics: "Upgrade diagnostic facilities",
+noActionRequired: "No action required",
+
+doctorReason:
+  "{patients} patients are managed by {doctors} doctor(s). AI recommends deploying {required} additional doctor(s).",
+
+bedReason:
+  "Only {available} beds are available out of {total} total beds.",
+
+medicineReason:
+  "{count} medicine(s) are in shortage or critical status.",
+
+testReason:
+  "Only {tests} diagnostic tests are currently available.",
+
+healthyReason:
+  "All healthcare resources are within safe operational limits.",
+  // ===== Disease Outbreak Early Warning =====
+
+diseaseOutbreak: "Disease Outbreak",
+
+diseaseOutbreakDesc:
+  "AI-powered disease surveillance and early outbreak detection across all PHCs.",
+
+activeAlerts: "Active Alerts",
+
+highRiskPHCs: "High Risk PHCs",
+
+diseasesMonitored: "Diseases Monitored",
+
+aiConfidence: "AI Confidence",
+
+currentCases: "Current Cases",
+
+normalAverage: "Normal Avg",
+
+risk: "Risk",
+
+confidence: "Confidence",
+
+disease: "Disease",
+
+possibleOutbreak: "Possible Disease Outbreak",
+
+noOutbreakDetected: "No Outbreak Detected",
+
+noOutbreakDesc:
+  "All monitored diseases are currently within expected limits.",
+
+deployMedicalTeam: "Deploy medical team immediately",
+
+increaseMedicineStock: "Increase medicine stock",
+
+notifyDistrictOfficer: "Notify District Health Officer",
+
+startVillageScreening: "Start village surveillance and screening",
+
+high: "High",
+
+medium: "Medium",
+
+low: "Low",
+applyRecommendation: "Apply Recommendation",
+
+applyingRecommendation: "Applying...",
+
+recommendationApplied:
+  "Recommendation Applied",
 };
 
 export default en;

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+
 import { getPatientChartData } from "../services/chartService";
 import { useLanguage } from "../context/LanguageContext";
+import { usePHC } from "../context/PHCContext";
 
 import {
   ResponsiveContainer,
@@ -15,6 +17,7 @@ import {
 
 function PatientChart() {
   const { t, language } = useLanguage();
+  const { selectedPHC } = usePHC();
 
   const dayNames = {
     en: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -26,25 +29,25 @@ function PatientChart() {
 
   useEffect(() => {
     async function loadChart() {
-      const chartData = await getPatientChartData();
+      const chartData = await getPatientChartData(selectedPHC);
 
-      if (chartData) {
-        const days = dayNames[language];
+      if (!chartData) return;
 
-        setData([
-          { day: days[0], patients: chartData.monday },
-          { day: days[1], patients: chartData.tuesday },
-          { day: days[2], patients: chartData.wednesday },
-          { day: days[3], patients: chartData.thursday },
-          { day: days[4], patients: chartData.friday },
-          { day: days[5], patients: chartData.saturday },
-          { day: days[6], patients: chartData.sunday },
-        ]);
-      }
+      const days = dayNames[language];
+
+      setData([
+        { day: days[0], patients: chartData.monday },
+        { day: days[1], patients: chartData.tuesday },
+        { day: days[2], patients: chartData.wednesday },
+        { day: days[3], patients: chartData.thursday },
+        { day: days[4], patients: chartData.friday },
+        { day: days[5], patients: chartData.saturday },
+        { day: days[6], patients: chartData.sunday },
+      ]);
     }
 
     loadChart();
-  }, [language]);
+  }, [language, selectedPHC]);
 
   return (
     <motion.div
@@ -69,14 +72,12 @@ function PatientChart() {
           </h2>
 
           <p className="text-sm text-slate-500">
-            {t.last7Days}
+            {selectedPHC === "All PHCs"
+              ? "All PHCs • Last 7 Days"
+              : `${selectedPHC} • Last 7 Days`}
           </p>
 
         </div>
-
-        <span className="text-green-600 font-semibold">
-          ▲ +8.5%
-        </span>
 
       </div>
 
@@ -84,6 +85,7 @@ function PatientChart() {
         <AreaChart data={data}>
 
           <defs>
+
             <linearGradient
               id="patientFill"
               x1="0"
@@ -96,19 +98,21 @@ function PatientChart() {
                 stopColor="#0F766E"
                 stopOpacity={0.35}
               />
+
               <stop
                 offset="95%"
                 stopColor="#0F766E"
                 stopOpacity={0.03}
               />
             </linearGradient>
+
           </defs>
 
           <CartesianGrid strokeDasharray="3 3" />
 
           <XAxis dataKey="day" />
 
-          <YAxis />
+          <YAxis allowDecimals={false} />
 
           <Tooltip />
 
@@ -118,8 +122,7 @@ function PatientChart() {
             stroke="#0F766E"
             strokeWidth={3}
             fill="url(#patientFill)"
-            animationDuration={1500}
-            animationEasing="ease-out"
+            animationDuration={1200}
           />
 
         </AreaChart>

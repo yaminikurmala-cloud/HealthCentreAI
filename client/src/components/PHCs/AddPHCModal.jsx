@@ -13,9 +13,9 @@ function AddPHCModal({
   const emptyForm = {
     name: "",
     district: "",
-    doctorCount: "",
-    patientCount: "",
     status: "Active",
+    availableBeds: "",
+    testsAvailable: "",
   };
 
   const [formData, setFormData] = useState(emptyForm);
@@ -25,9 +25,11 @@ function AddPHCModal({
       setFormData({
         name: editingPHC.name || "",
         district: editingPHC.district || "",
-        doctorCount: editingPHC.doctorCount || "",
-        patientCount: editingPHC.patientCount || "",
         status: editingPHC.status || "Active",
+        availableBeds:
+          editingPHC.availableBeds || "",
+        testsAvailable:
+          editingPHC.testsAvailable || "",
       });
     } else {
       setFormData(emptyForm);
@@ -48,11 +50,15 @@ function AddPHCModal({
 
     onSave({
       ...formData,
-      doctorCount: Number(formData.doctorCount),
-      patientCount: Number(formData.patientCount),
+      availableBeds: Number(
+        formData.availableBeds
+      ),
+      testsAvailable: Number(
+        formData.testsAvailable
+      ),
     });
 
-    setFormData(emptyForm);
+    onClose();
   }
 
   return (
@@ -82,40 +88,38 @@ function AddPHCModal({
 
           <input
             name="name"
-            placeholder={t.phcName}
             value={formData.name}
             onChange={handleChange}
+            placeholder={t.phcName}
             className="border rounded-xl p-3"
             required
           />
 
           <input
             name="district"
-            placeholder={t.district}
             value={formData.district}
             onChange={handleChange}
+            placeholder={t.district}
             className="border rounded-xl p-3"
             required
           />
 
           <input
             type="number"
-            name="doctorCount"
-            placeholder={t.totalDoctors}
-            value={formData.doctorCount}
+            name="availableBeds"
+            value={formData.availableBeds}
             onChange={handleChange}
+            placeholder={t.availableBeds}
             className="border rounded-xl p-3"
-            required
           />
 
           <input
             type="number"
-            name="patientCount"
-            placeholder={t.totalPatients}
-            value={formData.patientCount}
+            name="testsAvailable"
+            value={formData.testsAvailable}
             onChange={handleChange}
+            placeholder={t.testsAvailable}
             className="border rounded-xl p-3"
-            required
           />
 
           <select
@@ -124,8 +128,14 @@ function AddPHCModal({
             onChange={handleChange}
             className="border rounded-xl p-3 col-span-2"
           >
-            <option>{t.active}</option>
-            <option>{t.inactive}</option>
+            <option value="Active">
+              {t.active}
+            </option>
+
+            <option value="Inactive">
+              {t.inactive}
+            </option>
+
           </select>
 
           <div className="col-span-2 flex justify-end gap-4 mt-4">
@@ -142,7 +152,9 @@ function AddPHCModal({
               type="submit"
               className="px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl"
             >
-              {editingPHC ? t.updatePHC : t.savePHC}
+              {editingPHC
+                ? t.updatePHC
+                : t.savePHC}
             </button>
 
           </div>

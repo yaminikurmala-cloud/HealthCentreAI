@@ -1,155 +1,239 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import {
-  ArrowRight,
-  Truck,
+  AlertTriangle,
+  Clock3,
+  Package,
+  Building2,
+  CheckCircle2,
 } from "lucide-react";
 
-import { getLowStockMedicines } from "../services/lowStockService";
 import { useLanguage } from "../context/LanguageContext";
+import { getStockPredictions } from "../services/stockPredictionService";
 
 function LowStock() {
   const { t } = useLanguage();
 
-  const [medicines, setMedicines] = useState([]);
+  const [predictions, setPredictions] = useState([]);
 
   useEffect(() => {
-    async function loadMedicines() {
-      const data = await getLowStockMedicines();
-      setMedicines(data);
-    }
-
-    loadMedicines();
+    loadPredictions();
   }, []);
 
-  const getStatusColor = (status) => {
+  async function loadPredictions() {
+    const data = await getStockPredictions();
+
+    setPredictions(data.slice(0, 5));
+  }
+
+  function getStatusColor(status) {
     switch (status) {
-      case "Critical":
+      case "critical":
         return "bg-red-100 text-red-700";
 
-      case "Warning":
-        return "bg-amber-100 text-amber-700";
+      case "warning":
+        return "bg-yellow-100 text-yellow-700";
+
+      case "low":
+        return "bg-orange-100 text-orange-700";
 
       default:
         return "bg-green-100 text-green-700";
     }
-  };
+  }
 
-  const getStatusLabel = (status) => {
+  function getStatusText(status) {
     switch (status) {
-      case "Critical":
+      case "critical":
         return t.critical;
 
-      case "Warning":
+      case "warning":
         return t.warning;
 
-      case "Normal":
-        return t.normal;
+      case "low":
+        return t.low;
 
       default:
-        return status;
+        return t.healthy;
     }
-  };
+  }
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 25 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      whileHover={{ y: -2 }}
-      className="bg-white rounded-2xl shadow-sm border border-slate-200 h-[360px] p-6 flex flex-col"
-    >
-      <div className="flex justify-between items-center mb-5">
+  function recommendationText(item) {
+    switch (item.type) {
+      case "transfer":
+        return `${t.transfer} ${item.units} ${t.unitsFrom} ${item.from}`;
 
-        <h2 className="text-xl font-bold">
-          {t.lowStock}
+      case "order":
+        return `${t.order} ${item.units} ${t.additionalUnits}`;
+
+      case "notify":
+        return t.notifyDistrictStore;
+
+      default:
+        return t.stockHealthy;
+    }
+  }
+ return (
+  <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+
+    {/* Header */}
+
+    <div className="flex items-center justify-between px-6 py-5 border-b">
+
+      <div>
+
+        <h2 className="text-2xl font-bold">
+          🤖 {t.aiStockPrediction}
         </h2>
 
-        <span className="text-sm text-teal-700 font-medium">
-          {t.aiRedistribution}
-        </span>
+        <p className="text-gray-500 mt-1">
+          AI predicts medicines likely to stock out soon
+        </p>
 
       </div>
 
-      <div className="space-y-4 overflow-y-auto">
+      <AlertTriangle
+        className="text-red-500"
+        size={30}
+      />
 
-        {medicines.map((item, index) => (
+    </div>
 
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              delay: index * 0.15,
-              duration: 0.4,
-            }}
-            whileHover={{ x: 4 }}
-            className="border rounded-xl p-4 transition-all duration-300 hover:bg-slate-50 hover:border-teal-300 cursor-pointer"
-          >
+    <div className="overflow-x-auto">
 
-            <div className="flex justify-between">
+      <table className="min-w-full">
 
-              <h3 className="font-semibold text-sm">
-                {item.name}
-              </h3>
+        <thead className="bg-slate-100">
 
-              <span
-                className={`text-xs px-2 py-1 rounded-full ${getStatusColor(
-                  item.status
-                )}`}
-              >
-                {getStatusLabel(item.status)}
-              </span>
+          <tr>
 
-            </div>
+            <th className="px-6 py-4 text-left">
+              Medicine
+            </th>
 
-            <div className="mt-2 text-sm text-slate-500">
-              {t.remaining}
+            <th className="px-6 py-4 text-left">
+              PHC
+            </th>
 
-              <span className="font-semibold ml-1">
-                {item.stock} / {item.required}
-              </span>
+            <th className="px-6 py-4 text-center">
+              Stock
+            </th>
 
-            </div>
+            <th className="px-6 py-4 text-center">
+              Daily Use
+            </th>
 
-            <div className="mt-3 bg-teal-50 rounded-lg p-3">
+            <th className="px-6 py-4 text-center">
+              Days Left
+            </th>
 
-              <div className="flex items-center gap-2 text-teal-700 font-medium">
+            <th className="px-6 py-4 text-center">
+              Status
+            </th>
 
-                <Truck size={16} />
+            <th className="px-6 py-4 text-left">
+              AI Recommendation
+            </th>
 
-                {t.suggestedTransfer}
+          </tr>
 
-              </div>
+        </thead>
 
-              <div className="mt-2 text-sm">
+        <tbody>
 
-                <div className="flex items-center gap-2">
+          {predictions.map((medicine) => (
 
-                  <ArrowRight size={14} />
+            <tr
+              key={medicine.id}
+              className="border-t hover:bg-slate-50"
+            >
 
-                  {item.transferFrom}
+              <td className="px-6 py-5 font-semibold">
+
+                💊 {medicine.name}
+
+              </td>
+
+              <td className="px-6 py-5">
+
+                {medicine.phcName}
+
+              </td>
+
+              <td className="px-6 py-5 text-center font-bold">
+
+                {medicine.stock}
+
+              </td>
+
+              <td className="px-6 py-5 text-center">
+
+                {medicine.averageDailyConsumption}/day
+
+              </td>
+
+              <td className="px-6 py-5 text-center font-bold">
+
+                {medicine.daysLeft}
+
+              </td>
+
+              <td className="px-6 py-5 text-center">
+
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                    medicine.status
+                  )}`}
+                >
+                  {getStatusText(medicine.status)}
+                </span>
+
+              </td>
+
+              <td className="px-6 py-5">
+
+                <div className="space-y-2">
+
+                  {medicine.recommendations.map(
+                    (item, index) => (
+
+                      <div
+                        key={index}
+                        className="flex items-start gap-2"
+                      >
+
+                        <CheckCircle2
+                          className="text-green-600 mt-1"
+                          size={16}
+                        />
+
+                        <span className="text-sm">
+
+                          {recommendationText(item)}
+
+                        </span>
+
+                      </div>
+
+                    )
+                  )}
 
                 </div>
 
-                <div className="mt-3 text-teal-700 font-semibold">
+              </td>
 
-                  {t.available}: {item.transferUnits} {t.units}
+            </tr>
 
-                </div>
+          ))}
 
-              </div>
+        </tbody>
 
-            </div>
+      </table>
 
-          </motion.div>
+    </div>
 
-        ))}
-
-      </div>
-
-    </motion.div>
-  );
-}
+  </div>
+);
+};
+ 
 
 export default LowStock;
