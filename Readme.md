@@ -10,6 +10,16 @@ Health Centre AI is an intelligent healthcare management platform designed to di
 🔗 https://health-centre-ai-five.vercel.app/
 
 ---
+## 🔑 Demo Credentials
+
+To explore **Health Centre AI**, use the following demo account:
+
+| Field | Value |
+|-------|-------|
+| **Email** | `admin@healthai.com` |
+| **Password** | `Admin@123` |
+
+> **Note:** These are demo credentials provided exclusively for hackathon evaluation and testing.
 
 ## 📌 Problem Statement
 
