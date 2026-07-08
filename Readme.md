@@ -20,7 +20,13 @@ To explore **Health Centre AI**, use the following demo account:
 | **Password** | `Admin@123` |
 
 > **Note:** These are demo credentials provided exclusively for hackathon evaluation and testing.
+> 
+## 🎥 Project Demonstration
 
+A complete walkthrough of the Health Centre AI platform, including all AI modules, dashboard analytics, multilingual support, and resource management features.
+
+▶ **Demo Video:**  
+https://drive.google.com/file/d/1kQNIshlPIyuk6GSECrsp3gjevpptu5Jo/view?usp=drivesdk
 ## 📌 Problem Statement
 
 District healthcare administrators often manage multiple PHCs independently, making it difficult to monitor:
